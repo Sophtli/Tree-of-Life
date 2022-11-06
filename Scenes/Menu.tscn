@@ -1,0 +1,91 @@
+[gd_scene load_steps=4 format=3 uid="uid://bgpuqdielfi1"]
+
+[ext_resource type="Script" path="res://Scripts/StartButton.gd" id="1_fx34g"]
+[ext_resource type="Script" path="res://Scripts/QuitButton.gd" id="1_utydg"]
+[ext_resource type="PackedScene" uid="uid://1lvivhtn0myj" path="res://Scenes/Game.tscn" id="2_i8ety"]
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -70.0
+offset_right = 70.0
+offset_bottom = 371.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 391.0
+offset_bottom = 623.0
+
+[node name="StartButton" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+offset_left = 135.0
+offset_right = 235.0
+offset_bottom = 31.0
+size_flags_horizontal = 4
+text = "Start"
+script = ExtResource("1_fx34g")
+game_scene = ExtResource("2_i8ety")
+
+[node name="QuitButton" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+offset_left = 135.0
+offset_top = 35.0
+offset_right = 235.0
+offset_bottom = 66.0
+size_flags_horizontal = 4
+text = "Quit"
+script = ExtResource("1_utydg")
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+offset_top = 70.0
+offset_right = 371.0
+offset_bottom = 74.0
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+offset_top = 78.0
+offset_right = 371.0
+offset_bottom = 603.0
+theme_override_font_sizes/font_size = 13
+text = "Controls
+----------------------------------------------------------------------------------------
+Move: W, A, S, D or D-Pad / Joystick on Controller
+Attack: Spacebar or Left Mouse Button or X/A on Controller
+
+Story
+----------------------------------------------------------------------------------------
+You're on an unknown planet and have to protect the only
+oxygen source - the Tree of Life - from ghostly invaders!
+
+Gameplay
+----------------------------------------------------------------------------------------
+Tree of Life passively adds oxygen through photosynthesis
+- enemies walk towards the tree
+- tree gets damaged by 10% of its maximum health
+  when an enemy reaches it
+- less oxygen produced if damaged
+
+Attacks use 5% of your maximum oxygen
+
+Enemies take 3 hits to die
+
+----------------------------------------------------------------------------------------
+How long can you survive?
+Good luck!"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/StartButton" to="MarginContainer/VBoxContainer/StartButton" method="_on_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/QuitButton" to="MarginContainer/VBoxContainer/QuitButton" method="_on_pressed"]

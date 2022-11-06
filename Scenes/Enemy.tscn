@@ -1,0 +1,136 @@
+[gd_scene load_steps=12 format=3 uid="uid://cm7g0ktgvkel4"]
+
+[ext_resource type="Script" path="res://Scripts/Enemy.gd" id="1_74xtr"]
+[ext_resource type="Texture2D" uid="uid://ffpkdrgfgxvh" path="res://Resources/Enemy.png" id="2_raeor"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qgh4c"]
+size = Vector2(13.0769, 18.0769)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a77ca"]
+atlas = ExtResource("2_raeor")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4bpej"]
+atlas = ExtResource("2_raeor")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mvl5o"]
+animations = [{
+"frames": [SubResource("AtlasTexture_a77ca"), SubResource("AtlasTexture_4bpej")],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="Animation" id="Animation_tlfi5"]
+resource_name = "attack"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15004, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, 2, 0]
+}
+
+[sub_resource type="Animation" id="Animation_k1tgy"]
+resource_name = "attack_walk"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15004, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, 3, 0]
+}
+
+[sub_resource type="Animation" id="Animation_w3kmr"]
+resource_name = "walk"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [1, 0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_eyu42"]
+_data = {
+"attack": SubResource("Animation_tlfi5"),
+"attack_walk": SubResource("Animation_k1tgy"),
+"walk": SubResource("Animation_w3kmr")
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ork50"]
+bg_color = Color(0.901961, 0.301961, 0.486275, 0.588235)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="Enemy" type="CharacterBody2D"]
+collision_layer = 2
+script = ExtResource("1_74xtr")
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+scale = Vector2(3, 3)
+shape = SubResource("RectangleShape2D_qgh4c")
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(-1.19209e-07, -2.98023e-08)
+
+[node name="Collision" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, 2)
+scale = Vector2(3.5, 3.2)
+shape = SubResource("RectangleShape2D_qgh4c")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+texture_filter = 1
+scale = Vector2(4, 4)
+frames = SubResource("SpriteFrames_mvl5o")
+speed_scale = 0.5
+playing = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+"": SubResource("AnimationLibrary_eyu42")
+}
+
+[node name="NavigationAgent" type="NavigationAgent2D" parent="."]
+unique_name_in_owner = true
+target_desired_distance = 10.0
+avoidance_enabled = true
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(60, 0)
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -30.0
+offset_top = 20.0
+offset_right = 30.0
+offset_bottom = 47.0
+grow_horizontal = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_ork50")
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_hit"]
+[connection signal="velocity_computed" from="NavigationAgent" to="." method="_on_navigation_agent_velocity_computed"]

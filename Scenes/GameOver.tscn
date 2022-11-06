@@ -1,0 +1,67 @@
+[gd_scene load_steps=5 format=3 uid="uid://br2ot00ej1bye"]
+
+[ext_resource type="Script" path="res://Scripts/GameOver.gd" id="2_m61st"]
+[ext_resource type="Shader" path="res://Resources/Blur.gdshader" id="3_c4rkg"]
+[ext_resource type="Script" path="res://Scripts/QuitButton.gd" id="3_s31p2"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2fcuj"]
+shader = ExtResource("3_c4rkg")
+
+[node name="GameOver" type="ColorRect"]
+process_mode = 3
+visible = false
+material = SubResource("ShaderMaterial_2fcuj")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_m61st")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = -53.0
+offset_right = 60.0
+offset_bottom = 53.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="HBox" type="VBoxContainer" parent="MarginContainer"]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 112.0
+offset_bottom = 111.0
+
+[node name="GameOverLabel" type="Label" parent="MarginContainer/HBox"]
+unique_name_in_owner = true
+offset_right = 92.0
+offset_bottom = 26.0
+text = "Game Over!"
+
+[node name="TimeLabel" type="Label" parent="MarginContainer/HBox"]
+unique_name_in_owner = true
+offset_left = 25.0
+offset_top = 30.0
+offset_right = 66.0
+offset_bottom = 56.0
+size_flags_horizontal = 4
+text = "00:00"
+
+[node name="Quit" type="Button" parent="MarginContainer/HBox"]
+custom_minimum_size = Vector2(80, 0)
+offset_top = 60.0
+offset_right = 92.0
+offset_bottom = 91.0
+text = "Quit"
+script = ExtResource("3_s31p2")
+
+[connection signal="pressed" from="MarginContainer/HBox/Quit" to="MarginContainer/HBox/Quit" method="_on_pressed"]

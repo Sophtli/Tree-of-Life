@@ -1,0 +1,142 @@
+[gd_scene load_steps=11 format=3 uid="uid://c0yywcc1wmq5w"]
+
+[ext_resource type="Script" path="res://Scripts/UI.gd" id="1_lj1gu"]
+[ext_resource type="Script" path="res://Scripts/OxygenBar.gd" id="2_otrtt"]
+[ext_resource type="Shader" path="res://Resources/Blur.gdshader" id="3_c4rkg"]
+[ext_resource type="Script" path="res://Scripts/ResumeButton.gd" id="3_fpnro"]
+[ext_resource type="Script" path="res://Scripts/QuitButton.gd" id="3_s31p2"]
+[ext_resource type="PackedScene" uid="uid://br2ot00ej1bye" path="res://Scenes/GameOver.tscn" id="6_0ws5p"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1elt7"]
+bg_color = Color(0.333333, 0.623529, 0.882353, 0.784314)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2fcuj"]
+shader = ExtResource("3_c4rkg")
+
+[sub_resource type="InputEventAction" id="InputEventAction_s27g3"]
+action = &"ui_cancel"
+pressed = true
+
+[sub_resource type="Shortcut" id="Shortcut_3m2d7"]
+events = [SubResource("InputEventAction_s27g3")]
+
+[node name="UI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_lj1gu")
+
+[node name="Margin" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 35
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 30
+
+[node name="SauerstoffContainer" type="VBoxContainer" parent="Margin"]
+offset_left = 35.0
+offset_top = 25.0
+offset_right = 1122.0
+offset_bottom = 648.0
+theme_override_constants/separation = 5
+
+[node name="OxygenLabel" type="Label" parent="Margin/SauerstoffContainer"]
+custom_minimum_size = Vector2(120, 0)
+offset_left = 967.0
+offset_right = 1087.0
+offset_bottom = 31.0
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 20
+text = "Oxygen:"
+
+[node name="OxygenBar" type="ProgressBar" parent="Margin/SauerstoffContainer"]
+custom_minimum_size = Vector2(120, 40)
+offset_left = 967.0
+offset_top = 36.0
+offset_right = 1087.0
+offset_bottom = 76.0
+grow_horizontal = 0
+size_flags_horizontal = 8
+theme_override_styles/fill = SubResource("StyleBoxFlat_1elt7")
+script = ExtResource("2_otrtt")
+
+[node name="TimeLabel" type="Label" parent="Margin"]
+unique_name_in_owner = true
+offset_left = 35.0
+offset_top = 25.0
+offset_right = 36.0
+offset_bottom = 80.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 40
+
+[node name="PauseMenu" type="ColorRect" parent="."]
+unique_name_in_owner = true
+process_mode = 3
+visible = false
+material = SubResource("ShaderMaterial_2fcuj")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PauseMenu"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = -53.0
+offset_right = 60.0
+offset_bottom = 53.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="Buttons" type="VBoxContainer" parent="PauseMenu/MarginContainer"]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 100.0
+offset_bottom = 86.0
+
+[node name="Resume" type="Button" parent="PauseMenu/MarginContainer/Buttons"]
+custom_minimum_size = Vector2(80, 0)
+offset_right = 80.0
+offset_bottom = 31.0
+shortcut = SubResource("Shortcut_3m2d7")
+text = "Resume"
+script = ExtResource("3_fpnro")
+
+[node name="Quit" type="Button" parent="PauseMenu/MarginContainer/Buttons"]
+custom_minimum_size = Vector2(80, 0)
+offset_top = 35.0
+offset_right = 80.0
+offset_bottom = 66.0
+text = "Quit"
+script = ExtResource("3_s31p2")
+
+[node name="GameOver" parent="." instance=ExtResource("6_0ws5p")]
+unique_name_in_owner = true
+
+[connection signal="pressed" from="PauseMenu/MarginContainer/Buttons/Resume" to="PauseMenu/MarginContainer/Buttons/Resume" method="_on_pressed"]
+[connection signal="pressed" from="PauseMenu/MarginContainer/Buttons/Quit" to="PauseMenu/MarginContainer/Buttons/Quit" method="_on_pressed"]

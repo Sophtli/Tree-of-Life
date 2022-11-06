@@ -1,0 +1,83 @@
+[gd_scene load_steps=7 format=3 uid="uid://bd5hf7qycb7st"]
+
+[ext_resource type="Script" path="res://Scripts/Tree.gd" id="1_wlgmt"]
+[ext_resource type="Texture2D" uid="uid://b4khb06v0peg4" path="res://Resources/Tree.png" id="2_gcfhd"]
+[ext_resource type="Texture2D" uid="uid://ym640m5hhg1m" path="res://Resources/Tree-Top.png" id="3_rpl1c"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fevdd"]
+
+[sub_resource type="Curve" id="Curve_062sb"]
+min_value = -1.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2ii4g"]
+bg_color = Color(0.0196078, 0.670588, 0.00784314, 0.784314)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="Tree" type="StaticBody2D"]
+collision_layer = 4
+script = ExtResource("1_wlgmt")
+
+[node name="CollisionShape" type="CollisionShape2D" parent="."]
+position = Vector2(0, -20)
+scale = Vector2(5, 5)
+shape = SubResource("CircleShape2D_fevdd")
+
+[node name="Tree-Bottom" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+texture_filter = 1
+position = Vector2(0, -60)
+scale = Vector2(12, 12)
+texture = ExtResource("2_gcfhd")
+
+[node name="Tree-Top" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+texture_filter = 1
+position = Vector2(0, -130)
+scale = Vector2(12, 12)
+z_index = 2
+texture = ExtResource("3_rpl1c")
+
+[node name="Photsynthesis" type="CPUParticles2D" parent="."]
+position = Vector2(0, -120)
+scale = Vector2(12, 12)
+z_index = 3
+amount = 30
+lifetime = 3.0
+randomness = 1.0
+emission_shape = 1
+emission_sphere_radius = 8.0
+gravity = Vector2(0, -200)
+tangential_accel_min = -90.0
+tangential_accel_max = 90.0
+scale_amount_min = 3.0
+scale_amount_max = 10.0
+color = Color(0.803922, 0.87451, 0.168627, 1)
+hue_variation_min = -0.5
+hue_variation_max = 0.5
+hue_variation_curve = SubResource("Curve_062sb")
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -80.0
+offset_right = 80.0
+offset_bottom = 27.0
+grow_horizontal = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_2ii4g")
+
+[node name="Tree" type="Area2D" parent="."]
+
+[node name="CollisionShape" type="CollisionShape2D" parent="Tree"]
+position = Vector2(0, -20)
+scale = Vector2(5, 5)
+shape = SubResource("CircleShape2D_fevdd")
+
+[connection signal="area_entered" from="Tree" to="." method="_on_area_entered"]
